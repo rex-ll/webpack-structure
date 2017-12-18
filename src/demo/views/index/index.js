@@ -2,6 +2,6 @@
 import './index.less'
 
 
-console.log( '我是首页');
+console.log( '我是首页',$);
 
 

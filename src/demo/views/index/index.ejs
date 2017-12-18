@@ -10,11 +10,10 @@
 
 <body>
     <div id="root">
-        <%= require('@/demo/components/head.ejs')() %>
-        
+        <%= require('@/components/head.ejs')() %>
         <div class="content">我是首页Index</div>
-
-        <%= require('@/demo/components/foot.ejs')() %>
+        <img src="<%= require('@/static/img/2.png') %>" alt="">
+        <%= require('@/components/foot.ejs')() %>
     </div>
 </body>
 

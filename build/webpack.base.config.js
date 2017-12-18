@@ -66,7 +66,7 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: baseUrl + '/img/[name].[ext]?v=[hash:5]'
+                    name: baseUrl + 'img/[name].[ext]?v=[hash:5]'
                 }
             },
             {
@@ -74,7 +74,7 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: baseUrl + '/media/[name].[ext]?v=[hash:5]'
+                    name: baseUrl + 'media/[name].[ext]?v=[hash:5]'
                 }
             },
             {
@@ -82,7 +82,7 @@ module.exports = {
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
-                    name: baseUrl + '/fonts/[name].[ext]?v=[hash:5]'
+                    name: baseUrl + 'fonts/[name].[ext]?v=[hash:5]'
                 }
             }
         ]
@@ -90,7 +90,7 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.vue', '.json', '.ejs'],
         alias: {
-            '@': resolve('src')
+            '@': resolve('src/'+directories.projectName)
         }
     }
     
