@@ -51,7 +51,7 @@ app.get('/:viewname?', function (req, res, next) {
     // 使用webpack提供的outputFileSystem
     compiler.outputFileSystem.readFile(filepath, function (err, result) {
         if(req.url !== "/favicon.ico"){
-            console.log(filepath);
+            console.log(filepath,req.params);
             if (err) {
                 // something error
                 return next(err);
@@ -63,6 +63,6 @@ app.get('/:viewname?', function (req, res, next) {
     });
 });
 
-app.listen(4000, () => {
-    console.log("成功启动：localhost:" + 4000)
+app.listen(63341, () => {
+    console.log("成功启动：localhost:" + 63341)
 });

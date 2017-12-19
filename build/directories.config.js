@@ -1,4 +1,4 @@
-const projectName = 'demo';
+const projectName = 'weiyu';
 
 module.exports = {
     projectName: projectName,

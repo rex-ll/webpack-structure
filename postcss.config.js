@@ -2,6 +2,8 @@ module.exports = {
 	plugins: [
 		require('autoprefixer')({
 			browsers: ['> 1%', 'last 5 versions', 'not ie <= 9'],
-		})
+		}),
+        //require('postcss-import'),
+        //require('cssnano')
 	]
 }

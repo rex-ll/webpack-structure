@@ -30,6 +30,7 @@ module.exports = {
             {
                 test: /\.css$/,
                 loader: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
                     use: [
                         {loader: 'css-loader'},
                         {
@@ -46,8 +47,14 @@ module.exports = {
             {
                 test: /\.less$/,
                 loader: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
                     use: [
-                        {loader: 'css-loader'},
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                minimize: true
+                            }
+                        },
                         {loader: 'less-loader'},
                         {
                             loader: 'postcss-loader',
@@ -57,8 +64,7 @@ module.exports = {
                                 }
                             }
                         }
-                    ],
-                    fallback: "style-loader"
+                    ]
                 })
             },
             {
@@ -90,7 +96,7 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.vue', '.json', '.ejs'],
         alias: {
-            '@': resolve('src/'+directories.projectName)
+            '@': resolve('src/' + directories.projectName)
         }
     }
     

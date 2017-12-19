@@ -10,31 +10,6 @@ const merge = require('webpack-merge');
 const directories = require('./directories.config');
 const baseWebpackConfig = require('./webpack.base.config');
 
-// var htmlRoot = glob.sync('./src/views/**/*.ejs')
-//     .map((item, i, arr) => item.split('/')[arr.length])
-//     .map(function(item) {
-//         return new HtmlWebpackPlugin({
-//             filename: `./${item}.html`,
-//             template: `./src/views/${item}/${item}.ejs`,
-//             inject: true,
-//             minify: {
-//                 removeComments: true, //删除注释
-//                 collapseWhitespace: false, // 压缩
-//                 removeAttributeQuotes: false // 去掉路径引号
-//                 // more options:
-//                 // https://github.com/kangax/html-minifier#options-quick-reference
-//             },
-//             // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-//             chunksSortMode: 'dependency',
-//             chunks: ['vendors', 'index']
-//         });
-//     });
-
-
-// Object.keys(baseWebpackConfig.entry).forEach(function (name) {
-//     baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
-// })
-
 
 function getEntry(globPath) {
     var entries = {},
@@ -74,6 +49,7 @@ const htmlConfig = () => {
                     // https://github.com/kangax/html-minifier#options-quick-reference
                 },
                 // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+                //title:`${attr}`,
                 chunksSortMode: 'dependency',
                 chunks: ['vendors', 'app', `${attr}`]
             })
@@ -128,7 +104,7 @@ module.exports = merge(baseWebpackConfig, {
             }
         }),
         new CopyWebpackPlugin([{
-            from: path.resolve(__dirname, '../' + directories.srcPath + 'static/'),
+            from: path.resolve(__dirname, '../static'),
             to: directories.publicPath + 'static',
             ignore: ['.*']
         }])
