@@ -7,7 +7,7 @@ const merge = require('webpack-merge');
 
 const baseWebpackConfig = require('./webpack.base.config.js');
 
-const glob =require('glob');
+const glob = require('glob');
 
 
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
@@ -15,12 +15,11 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
 })
 
 
-
 function getEntry(globPath) {
     var entries = {},
         basename, tmp, pathname;
-
-    glob.sync(globPath).forEach(function(entry) {
+    
+    glob.sync(globPath).forEach(function (entry) {
         basename = path.basename(entry, path.extname(entry));
         tmp = entry.split('/').splice(-3);
         
@@ -32,7 +31,6 @@ function getEntry(globPath) {
 }
 
 
-
 //console.log( getEntry('./src/views/**/*.ejs').map(  ) );
 
 
@@ -40,27 +38,26 @@ const Entry = getEntry('./src/views/**/*.js');
 const HtmlTpl = getEntry('./src/views/**/*.ejs');
 const htmlConfig = () => {
     let config = [];
-
-    for( let attr in HtmlTpl ){
-        console.log( attr , '=====>', HtmlTpl[attr]  );
+    
+    for (let attr in HtmlTpl) {
+        console.log(attr, '=====>', HtmlTpl[attr]);
         config.push(
             new HtmlWebpackPlugin({
                 filename: `./${attr}.html`,
+                favicon: path.resolve(__dirname, '../favicon.ico'),
                 template: `${HtmlTpl[attr]}`,
-                chunks: ['vendors', 'app',`${attr}`],
+                chunks: ['vendors', 'app', `${attr}`],
                 inject: true
             })
         )
     }
-
+    
     return config;
 }
 
 
-
-
-module.exports = merge(baseWebpackConfig,{
-    entry : Entry,
+module.exports = merge(baseWebpackConfig, {
+    entry: Entry,
     devtool: 'source-map',
     output: {
         path: path.resolve(__dirname, '../dist'),
@@ -74,7 +71,7 @@ module.exports = merge(baseWebpackConfig,{
             filename: './static/css/[name].css' //  ./css/[name].[contenthash].css
         }),
         new FriendlyErrorsPlugin()
-    ].concat( htmlConfig() )
-
-
+    ].concat(htmlConfig())
+    
+    
 })

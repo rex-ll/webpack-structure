@@ -42,6 +42,7 @@ const htmlConfig = () => {
                 filename: `view/${attr}.html`,
                 template: `${HtmlTpl[attr]}`,
                 inject: true,
+                favicon:path.resolve(__dirname, '../favicon.ico'),
                 minify: {
                     removeComments: true, //删除注释
                     collapseWhitespace: false, // 压缩
