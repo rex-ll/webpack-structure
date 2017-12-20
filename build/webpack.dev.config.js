@@ -5,10 +5,9 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const merge = require('webpack-merge');
 
-const baseWebpackConfig = require('./webpack.base.config');
-const directories = require('./directories.config')
+const baseWebpackConfig = require('./webpack.base.config.js');
 
-const glob = require('glob');
+const glob =require('glob');
 
 
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
@@ -16,11 +15,12 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
 })
 
 
+
 function getEntry(globPath) {
     var entries = {},
         basename, tmp, pathname;
-    
-    glob.sync(globPath).forEach(function (entry) {
+
+    glob.sync(globPath).forEach(function(entry) {
         basename = path.basename(entry, path.extname(entry));
         tmp = entry.split('/').splice(-3);
         
@@ -32,55 +32,49 @@ function getEntry(globPath) {
 }
 
 
+
 //console.log( getEntry('./src/views/**/*.ejs').map(  ) );
 
 
-const Entry = getEntry(directories.srcPath + 'views/**/*.js');
-const HtmlTpl = getEntry(directories.srcPath + 'views/**/*.ejs');
+const Entry = getEntry('./src/views/**/*.js');
+const HtmlTpl = getEntry('./src/views/**/*.ejs');
 const htmlConfig = () => {
     let config = [];
-    
-    for (let attr in HtmlTpl) {
-        console.log(attr, '===>', HtmlTpl[attr]);
+
+    for( let attr in HtmlTpl ){
+        console.log( attr , '=====>', HtmlTpl[attr]  );
         config.push(
             new HtmlWebpackPlugin({
                 filename: `./${attr}.html`,
                 template: `${HtmlTpl[attr]}`,
-                chunks: ['vendors', 'app', `${attr}`],
+                chunks: ['vendors', 'app',`${attr}`],
                 inject: true
             })
         )
     }
+
     return config;
 }
 
 
-module.exports = merge(baseWebpackConfig, {
-    entry: Entry,
-    devtool: '#cheap-module-eval-source-map',
+
+
+module.exports = merge(baseWebpackConfig,{
+    entry : Entry,
+    devtool: 'source-map',
     output: {
-        path: path.resolve(__dirname, '../dist/' + directories.distPath),
-        filename: 'dev/js/[name].js',
+        path: path.resolve(__dirname, '../dist'),
+        filename: './static/js/[name].js',
         publicPath: '/'
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin(),
-        // new HtmlWebpackPlugin({
-        //     filename: './index.html',
-        //     template: 'index.ejs',
-        //     inject: true
-        // }),
-        // new HtmlWebpackPlugin({
-        //     filename: './about.html',
-        //     template: 'about.ejs',
-        //     inject: true
-        // }),
         new ExtractTextPlugin({
-            filename: 'dev/css/[name].css' //  ./css/[name].[contenthash].css
+            filename: './static/css/[name].css' //  ./css/[name].[contenthash].css
         }),
         new FriendlyErrorsPlugin()
-    ].concat(htmlConfig())
-    
-    
+    ].concat( htmlConfig() )
+
+
 })

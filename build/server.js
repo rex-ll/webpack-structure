@@ -2,7 +2,7 @@ const express = require('express');
 const webpack = require('webpack');
 const path = require('path');
 const opn = require('opn');
-
+const port = 63341;
 const webpackConfig = require('./webpack.dev.config');
 
 const compiler = webpack(webpackConfig);
@@ -21,9 +21,11 @@ var hotMiddleware = require('webpack-hot-middleware')(compiler, {
 });
 
 
+
+
 // 当tml-webpack-plugin template更改之后，强制刷新浏览器
-compiler.plugin('compilation', function (compilation) {
-    compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
+compiler.plugin('compilation', function(compilation) {
+    compilation.plugin('html-webpack-plugin-after-emit', function(data, cb) {
         hotMiddleware.publish({
             action: 'reload'
         })
@@ -35,23 +37,24 @@ app.use(devMiddleware);
 
 app.use(hotMiddleware);
 
-var staticPath = path.posix.join('/', 'dev'); // express 静态文件托管
-app.use(staticPath, express.static('./dev'));
+var staticPath = path.posix.join('/', 'static'); // express 静态文件托管
+app.use(staticPath, express.static('./static'));
+
+
 
 
 //  设置路由 ： 例如 /a.html ==> /a
-app.get('/:viewname?', function (req, res, next) {
-    
+app.get('/:viewname?', function(req, res, next) {
+
     var viewname = req.params.viewname ?
         req.params.viewname + '.html' :
         'index.html';
+
     var filepath = path.join(compiler.outputPath, viewname);
-    
-    
+
     // 使用webpack提供的outputFileSystem
-    compiler.outputFileSystem.readFile(filepath, function (err, result) {
+    compiler.outputFileSystem.readFile(filepath, function(err, result) {
         if(req.url !== "/favicon.ico"){
-            console.log(filepath,req.params);
             if (err) {
                 // something error
                 return next(err);
@@ -63,6 +66,11 @@ app.get('/:viewname?', function (req, res, next) {
     });
 });
 
-app.listen(63341, () => {
-    console.log("成功启动：localhost:" + 63341)
+
+
+
+
+
+app.listen(port, () => {
+    console.log("成功启动：localhost:" + port)
 });
