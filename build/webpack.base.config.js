@@ -58,18 +58,19 @@ module.exports = {
                             }
                         },
                         {
-                            loader: 'less-loader', options: {
-                                sourceMap: true
-                            }
-                        },
-                        {
                             loader: 'postcss-loader',
                             options: {
                                 config: {
                                     path: postcssConfig
                                 }
                             }
+                        },
+                        {
+                            loader: 'less-loader', options: {
+                                sourceMap: true
+                            }
                         }
+                        
                     ],
                     fallback: "style-loader",
                     publicPath: '../../'

@@ -1,17 +1,133 @@
-
-
-
-
-.content{
-    margin: 240px;
-    font-size: 24px;
-    color: teal;
-  height: 300px;
-
+@import "./lib/style/loading";
+@import "./lib/style/posterGrid";
+@color: #0112C2;
+body {
+  background: #FFFFFF;
+  color: #555555;
+  font-family: 'Open Sans', sans-serif;
+  line-height: 24px;
+  position: relative;
 }
 
-.footer{
-    font-size: 24px;
-    padding: 0 120px;
-    color: rebeccapurple;
+ul, li {
+  list-style: none;
+  padding: 0;
+}
+/* start navigation */
+.navbar-default {
+  background: #FFF;
+  border: none;
+  box-shadow: 0px 2px 8px 0px rgba(50, 50, 50, 0.08);
+  margin: 0 !important;
+}
+
+.navbar-default .navbar-brand {
+  color: @color;
+  height: 65px;
+  line-height: 40px;
+  padding: 0;
+  width: 100px;
+  h1{
+    text-indent: -9999em;
+    overflow: hidden;
+    width: 86px;
+    height: 40px;
+    margin-top: 12px;
+    background: url("./img/logo.png") no-repeat center;
+    background-size: cover;
+  }
+}
+
+.navbar-default .navbar-nav li a {
+  color: #404040;
+  font-weight: bold;
+  height: 65px;
+  line-height: 40px;
+}
+
+.navbar-default .navbar-nav li a:hover {
+  color: @color;
+}
+
+.navbar-default .navbar-nav > li > a:focus {
+  color: #888;
+}
+
+.navbar-default .navbar-toggle {
+  margin-top: 16px;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: @color;
+  color: #FFFFFF;
+}
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+  color: @color;
+  background-color: transparent;
+}
+
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+  background-color: #FFFFFF;
+}
+
+.navbar-default .navbar-toggle:hover .icon-bar {
+  background-color: @color;
+}
+
+/* end navigation */
+
+.container > .navbar-header,
+.container-fluid > .navbar-header,
+.container > .navbar-collapse,
+.container-fluid > .navbar-collapse {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+footer {
+  padding: 30px 0;
+}
+
+@media (min-width: 768px) {
+  .container > .navbar-header,
+  .container-fluid > .navbar-header,
+  .container > .navbar-collapse,
+  .container-fluid > .navbar-collapse {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar > .container .navbar-brand,
+  .navbar > .container-fluid .navbar-brand {
+    margin-left: -15px;
+  }
+}
+@media only screen and ( max-width: 768px ) {
+  .navbar-header {
+    padding-left: 15px;
+  }
+
+  h1 {
+    font-size: 26px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  h2 {
+    font-size: 14px;
+  }
 }
