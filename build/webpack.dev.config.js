@@ -4,7 +4,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const merge = require('webpack-merge');
-
+const HappyPack = require('happypack');
+const os = require('os');
+const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length});
 const baseWebpackConfig = require('./webpack.base.config.js');
 
 const glob = require('glob');
@@ -67,6 +69,24 @@ module.exports = merge(baseWebpackConfig, {
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin(),
+        new HappyPack({
+            id: 'css',
+            threadPool: happyThreadPool,
+            verbose: true,
+            loaders: ['css-loader?mportLoaders=1&minimize=true&sourceMap=true']
+        }),
+        new HappyPack({
+            id: 'less',
+            threadPool: happyThreadPool,
+            verbose: true,
+            loaders: ['less-loader?sourceMap=true']
+        }),
+        new HappyPack({
+            id: 'babel',
+            threadPool: happyThreadPool,
+            verbose: true,
+            loaders: ['babel-loader?cacheDirectory=true']
+        }),
         new ExtractTextPlugin({
             filename: './static/css/[name].css' //  ./css/[name].[contenthash].css
         }),

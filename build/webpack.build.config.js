@@ -7,15 +7,16 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const glob = require("glob");
 const merge = require('webpack-merge');
-
+const HappyPack = require('happypack');
+const os = require('os');
+const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length});
 const baseWebpackConfig = require('./webpack.base.config');
-
 
 function getEntry(globPath) {
     var entries = {},
         basename, tmp, pathname;
-
-    glob.sync(globPath).forEach(function(entry) {
+    
+    glob.sync(globPath).forEach(function (entry) {
         basename = path.basename(entry, path.extname(entry));
         tmp = entry.split('/').splice(-3);
         
@@ -27,7 +28,6 @@ function getEntry(globPath) {
 }
 
 
-
 //console.log( getEntry('./src/views/**/*.ejs').map(  ) );
 
 
@@ -35,14 +35,14 @@ const Entry = getEntry('./src/views/**/*.js');
 const HtmlTpl = getEntry('./src/views/**/*.ejs');
 const htmlConfig = () => {
     let config = [];
-
-    for( let attr in HtmlTpl ){
+    
+    for (let attr in HtmlTpl) {
         config.push(
             new HtmlWebpackPlugin({
                 filename: `view/${attr}.html`,
                 template: `${HtmlTpl[attr]}`,
                 inject: true,
-                favicon:path.resolve(__dirname, '../favicon.ico'),
+                favicon: path.resolve(__dirname, '../favicon.ico'),
                 minify: {
                     removeComments: true, //删除注释
                     collapseWhitespace: false, // 压缩
@@ -52,20 +52,20 @@ const htmlConfig = () => {
                 },
                 // necessary to consistently work with multiple chunks via CommonsChunkPlugin
                 chunksSortMode: 'dependency',
-                chunks: ['vendors', 'app',`${attr}`]
+                chunks: ['vendors', 'app', `${attr}`]
             })
         )
     }
-
+    
     return config;
 }
 module.exports = merge(baseWebpackConfig, {
-    entry : Entry,
-    devtool:"cheap-module-source-map",
+    entry: Entry,
+    devtool: "cheap-module-source-map",
     output: {
         path: path.resolve(__dirname, '../dist'),
         filename: 'static/js/[name].js?v=[chunkhash:8]', // js/[name].[chunkhash].js
-        publicPath:'../' //每个页面单独文件夹
+        publicPath: '../' //每个页面单独文件夹
     },
     plugins: [
         new CleanWebpackPlugin(
@@ -86,13 +86,31 @@ module.exports = merge(baseWebpackConfig, {
         }),
         new OptimizeCSSPlugin({
             cssProcessorOptions: {
-                discardComments: { removeAll: true }
+                discardComments: {removeAll: true}
             }
+        }),
+        new HappyPack({
+            id: 'css',
+            threadPool: happyThreadPool,
+            verbose: true,
+            loaders: ['css-loader?mportLoaders=1&minimize=true&sourceMap=true']
+        }),
+        new HappyPack({
+            id: 'less',
+            threadPool: happyThreadPool,
+            verbose: true,
+            loaders: ['less-loader?sourceMap=true']
+        }),
+        new HappyPack({
+            id: 'babel',
+            threadPool: happyThreadPool,
+            verbose: true,
+            loaders: ['babel-loader?cacheDirectory=true']
         }),
         new webpack.BannerPlugin(`${ new Date }`),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendors',
-            minChunks: function(module, count) {
+            minChunks: function (module, count) {
                 // any required modules inside node_modules are extracted to vendor
                 return (
                     module.resource &&
@@ -108,7 +126,7 @@ module.exports = merge(baseWebpackConfig, {
             to: 'static',
             ignore: ['.*']
         }])
-    ].concat( htmlConfig() ), //.concat(htmls)
+    ].concat(htmlConfig()), //.concat(htmls)
     externals: {
         //'jquery':'window.jQuery'
     }

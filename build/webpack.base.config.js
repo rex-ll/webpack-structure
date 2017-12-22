@@ -1,6 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const happyPack = require('happypack');
+
 const postcssConfig = './postcss.config.js';
 
 function resolve(dir) {
@@ -17,12 +19,14 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
-                loader: 'babel-loader',
-                include: [resolve('src'), resolve('test')]
+                loader: 'happypack/loader?id=babel',
+                exclude: /node_modules/,
+                include: [resolve('src')]
             },
             {
                 test: /\.ejs$/,
                 exclude: /node_modules/,
+                include: [resolve('src')],
                 use: ['ejs-loader']
             },
             {
@@ -30,10 +34,7 @@ module.exports = {
                 loader: ExtractTextPlugin.extract({
                     use: [
                         {
-                            loader: 'css-loader', options: {
-                                minimize: true,//开启压缩
-                                sourceMap: true//开启sourceMap
-                            }
+                            loader: 'happypack/loader?id=css'
                         },
                         {
                             loader: 'postcss-loader',
@@ -52,25 +53,21 @@ module.exports = {
                 loader: ExtractTextPlugin.extract({
                     use: [
                         {
-                            loader: 'css-loader', options: {
-                                minimize: true,
-                                sourceMap: true
-                            }
+                            loader: 'happypack/loader?id=css'
                         },
                         {
                             loader: 'postcss-loader',
                             options: {
                                 config: {
                                     path: postcssConfig
-                                }
+                                },
+                                sourceMap: true
                             }
                         },
                         {
-                            loader: 'less-loader', options: {
-                                sourceMap: true
-                            }
+                            loader: 'happypack/loader?id=less'
                         }
-                        
+                    
                     ],
                     fallback: "style-loader",
                     publicPath: '../../'
@@ -89,7 +86,7 @@ module.exports = {
                     },
                     /*对图片进行压缩*/
                     {
-                        loader: 'image-webpack-loader',
+                        loader: 'image-webpack-loader'/*,
                         query: {
                             progressive: true,
                             optimizationLevel: 6,
@@ -98,7 +95,7 @@ module.exports = {
                                 quality: '65-90',
                                 speed: 4
                             }
-                        }
+                        }*/
                     }
                 ]
             },
@@ -123,7 +120,9 @@ module.exports = {
     resolve: {
         extensions: ['.js', '.vue', '.json', '.ejs'],
         alias: {
-            '@': resolve('src')
+            '@': resolve('src'),
+            '@assets': resolve('src/assets'),
+            '@components': resolve('src/components')
         }
     },
 }
