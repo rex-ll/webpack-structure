@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/H5-muster.iml" filepath="$PROJECT_DIR$/.idea/H5-muster.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/webpack-structure.iml" filepath="$PROJECT_DIR$/.idea/webpack-structure.iml" />
     </modules>
   </component>
 </project>
