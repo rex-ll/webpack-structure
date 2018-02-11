@@ -8,7 +8,6 @@ import {WOW} from 'wowjs'
 
 window.onload = function () {
     new WOW().init();
-    
     $('#loading').fadeOut(200, function () {
         $(this).parent().removeClass('modal-open')
             .end().remove();
